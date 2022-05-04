@@ -35,6 +35,7 @@ function Login() {
         id="reveal-password"
         onChange={handleRevealPassord}
       />
+      <button type="submit">Entrar</button>
     </form>
   );
 }
