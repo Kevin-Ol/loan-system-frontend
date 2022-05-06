@@ -1,6 +1,6 @@
 import ClientRegister from "../components/ClientRegister";
 
-function App() {
+function Register() {
   return (
     <main>
       <h1>Cadastro de cliente</h1>
@@ -9,4 +9,4 @@ function App() {
   );
 }
 
-export default App;
+export default Register;

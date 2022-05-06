@@ -1,6 +1,6 @@
 import Login from "../components/Login";
 
-function App() {
+function Home() {
   return (
     <main>
       <h1>Login</h1>
@@ -9,4 +9,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

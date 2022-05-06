@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "react": "^18.1.0",
+    "react-currency-input-field": "^3.6.4",
     "react-dom": "^18.1.0",
     "react-input-mask": "^2.0.4",
     "react-router-dom": "^6.3.0",
