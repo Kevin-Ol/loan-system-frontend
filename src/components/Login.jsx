@@ -1,9 +1,11 @@
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/Auth";
 import api from "../services/api";
 
 function Login() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +24,8 @@ function Login() {
     try {
       const { data } = await api.post("login", { email, password });
 
-      localStorage.setItem("@loan-system", JSON.stringify(data));
+      localStorage.setItem("@loan-system", JSON.stringify(data.token));
+      setUser(true);
       navigate("/loan/list");
     } catch (error) {
       setErrorMessage("Usuário ou senha incorretos");
