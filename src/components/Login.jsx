@@ -1,22 +1,41 @@
 import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [revealPassword, setRevealPassword] = useState(false);
 
   const handleEmail = useCallback(({ target }) => setEmail(target.value));
   const handlePassword = useCallback(({ target }) => setPassword(target.value));
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleRevealPassord = useCallback(({ target }) =>
     setRevealPassword(target.checked)
   );
 
+  const handleSubmit = useCallback(async (event) => {
+    event.preventDefault();
+    try {
+      const { data } = await api.post("login", { email, password });
+
+      localStorage.setItem("@loan-system", JSON.stringify(data));
+      navigate("/loan/list");
+    } catch (error) {
+      setErrorMessage("Usuário ou senha incorretos");
+    }
+  });
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="email">Email</label>
       <input
         type="email"
         id="email"
+        required
         placeholder="seu.email@gmail.com"
         value={email}
         onChange={handleEmail}
@@ -24,8 +43,9 @@ function Login() {
       <label htmlFor="password">Senha</label>
       <input
         type={revealPassword ? "text" : "password"}
-        placeholder="senha123"
         id="password"
+        required
+        placeholder="senha123"
         value={password}
         onChange={handlePassword}
       />
@@ -35,6 +55,7 @@ function Login() {
         id="reveal-password"
         onChange={handleRevealPassord}
       />
+      <p>{errorMessage}</p>
       <button type="submit">Entrar</button>
     </form>
   );
