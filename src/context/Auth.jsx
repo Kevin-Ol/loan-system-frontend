@@ -4,6 +4,7 @@ import {
   useCallback,
   useMemo,
   useContext,
+  // useEffect,
 } from "react";
 import api from "../services/api";
 
@@ -22,6 +23,14 @@ export function AuthProvider({ children }) {
 
     return false;
   });
+
+  // useEffect(() => {
+  //   if (user) {
+  //     const token = localStorage.getItem("@loan-system");
+  //     delete api.defaults.headers.common.authorization;
+  //     api.defaults.headers.common.authorization = token;
+  //   }
+  // }, []);
 
   const signOut = useCallback(() => {
     setUser(false);

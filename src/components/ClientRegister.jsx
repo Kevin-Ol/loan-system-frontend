@@ -1,13 +1,17 @@
 import { useState, useCallback, useEffect } from "react";
 import InputMask from "react-input-mask";
 import axios from "axios";
+import api from "../services/api";
 
 function ClientRegister() {
+  const onlyNumbers = useCallback((text) => text.replace(/[^0-9]/g, ""));
+
   const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [cpf, setCpf] = useState("");
   const [rg, setRg] = useState("");
-  const [tel, setTel] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [phone, setPhone] = useState("");
+  const [street, setStreet] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
   const [states, setStates] = useState([]);
   const [selectedState, setSelectedState] = useState("");
   const [cities, setCities] = useState([]);
@@ -15,10 +19,19 @@ function ClientRegister() {
   const [notes, setNotes] = useState("");
 
   const handleName = useCallback(({ target }) => setName(target.value));
-  const handleAddress = useCallback(({ target }) => setAddress(target.value));
-  const handleCpf = useCallback(({ target }) => setCpf(target.value));
-  const handleRg = useCallback(({ target }) => setRg(target.value));
-  const handleTel = useCallback(({ target }) => setTel(target.value));
+  const handleStreet = useCallback(({ target }) => setStreet(target.value));
+  const handleNeighborhood = useCallback(({ target }) =>
+    setNeighborhood(target.value)
+  );
+  const handleCpf = useCallback(({ target }) =>
+    setCpf(onlyNumbers(target.value))
+  );
+  const handleRg = useCallback(({ target }) =>
+    setRg(onlyNumbers(target.value))
+  );
+  const handlePhone = useCallback(({ target }) =>
+    setPhone(onlyNumbers(target.value))
+  );
   const handleNotes = useCallback(({ target }) => setNotes(target.value));
 
   const fetchCities = useCallback(async (uf) => {
@@ -49,25 +62,47 @@ function ClientRegister() {
     fetchStates();
   }, []);
 
+  const handleSubmit = useCallback(async (event) => {
+    event.preventDefault();
+    try {
+      const clientInfo = {
+        name,
+        rg,
+        cpf,
+        phone,
+        street,
+        neighborhood,
+        state: selectedState,
+        city: selectedCity,
+      };
+
+      await api.post("client/create", clientInfo);
+      setName("");
+      setRg("");
+      setCpf("");
+      setPhone("");
+      setStreet("");
+      setNeighborhood("");
+      setNotes("");
+      global.alert("Cliente cadastrado com sucesso!");
+    } catch (error) {
+      const { status } = error.response;
+
+      if (status === 409) {
+        global.alert("Usuário já cadastrado");
+      }
+    }
+  });
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="name">Nome</label>
-      <input type="text" id="name" value={name} onChange={handleName} />
-      <label htmlFor="address">Endereço</label>
       <input
         type="text"
-        id="address"
-        value={address}
-        onChange={handleAddress}
-      />
-      <label htmlFor="cpf">CPF</label>
-      <InputMask
-        mask="999.999.999-99"
-        placeholder="123.456.789-00"
-        type="text"
-        id="cpf"
-        value={cpf}
-        onChange={handleCpf}
+        id="name"
+        required
+        value={name}
+        onChange={handleName}
       />
       <label htmlFor="rg">RG</label>
       <InputMask
@@ -78,14 +113,32 @@ function ClientRegister() {
         value={rg}
         onChange={handleRg}
       />
-      <label htmlFor="tel">Telefone</label>
+      <label htmlFor="cpf">CPF</label>
+      <InputMask
+        mask="999.999.999-99"
+        placeholder="123.456.789-00"
+        type="text"
+        id="cpf"
+        value={cpf}
+        onChange={handleCpf}
+      />
+      <label htmlFor="phone">Telefone</label>
       <InputMask
         mask="(99) 99999-9999"
         placeholder="(00) 98765-4321"
         type="text"
-        id="tel"
-        value={tel}
-        onChange={handleTel}
+        id="phone"
+        value={phone}
+        onChange={handlePhone}
+      />
+      <label htmlFor="street">Endereço</label>
+      <input type="text" id="street" value={street} onChange={handleStreet} />
+      <label htmlFor="neighborhood">Bairro</label>
+      <input
+        type="text"
+        id="neighborhood"
+        value={neighborhood}
+        onChange={handleNeighborhood}
       />
       <label htmlFor="state">Estado</label>
       <select id="state" value={selectedState} onChange={handleState}>

@@ -24,7 +24,7 @@ function Login() {
     try {
       const { data } = await api.post("login", { email, password });
 
-      localStorage.setItem("@loan-system", JSON.stringify(data.token));
+      localStorage.setItem("@loan-system", data.token);
       setUser(true);
       navigate("/loan/list");
     } catch (error) {
