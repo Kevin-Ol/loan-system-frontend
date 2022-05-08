@@ -1,9 +1,10 @@
 import LoanRegister from "../components/LoanRegister";
+import Header from "../components/Header";
 
 function Loan() {
   return (
     <main>
-      <h1>Cadastro de empréstimo</h1>
+      <Header title="Cadastro de empréstimo" />
       <LoanRegister />
     </main>
   );

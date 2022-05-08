@@ -1,9 +1,10 @@
 import ClientRegister from "../components/ClientRegister";
+import Header from "../components/Header";
 
 function Register() {
   return (
     <main>
-      <h1>Cadastro de cliente</h1>
+      <Header title="Cadastro de cliente" />
       <ClientRegister />
     </main>
   );
