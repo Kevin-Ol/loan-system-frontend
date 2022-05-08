@@ -1,7 +1,12 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import CurrencyInput from "react-currency-input-field";
+import api from "../services/api";
 
 function LoanRegister() {
+  const numberWithDot = useCallback((text) =>
+    text.replace(/[^0-9,]/g, "").replace(",", ".")
+  );
+
   const dateToString = useCallback((date) => {
     const currentYear = date.getFullYear();
     const currentMonth =
@@ -10,9 +15,12 @@ function LoanRegister() {
     return `${currentYear}-${currentMonth}-${currentDay}`;
   });
 
-  const [amount, setAmount] = useState(0);
-  const [rate, setRate] = useState(30);
+  const [client, setClient] = useState("");
+  const [clientId, setClientId] = useState(null);
+  const [amount, setAmount] = useState("0");
+  const [rate, setRate] = useState("30");
   const [days, setDays] = useState(30);
+  const [clientList, setClientList] = useState([]);
 
   const [startDate, setStartDate] = useState(() => {
     const currentDate = new Date();
@@ -25,8 +33,18 @@ function LoanRegister() {
     return dateToString(futureDate);
   });
 
-  const handleAmount = useCallback((value) => setAmount(value));
-  const handleRate = useCallback((value) => setRate(value));
+  const handleClient = useCallback(({ target }) => {
+    setClient(target.value);
+    const clientInfo = clientList.find(({ name }) => name === target.value);
+    if (clientInfo) {
+      setClientId(clientInfo.id);
+    } else {
+      setClientId(null);
+    }
+  });
+
+  const handleAmount = useCallback((value = "") => setAmount(value));
+  const handleRate = useCallback((value = "") => setRate(value));
 
   const handleStartDate = useCallback(({ target }) =>
     setStartDate(target.value)
@@ -48,8 +66,59 @@ function LoanRegister() {
     setDays(value);
   });
 
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const { data } = await api.get("client/list");
+        setClientList(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchClients();
+  }, []);
+
+  const handleSubmit = useCallback(async (event) => {
+    event.preventDefault();
+    if (amount === "0") {
+      return global.alert("Valor do empréstimo não pode ser zero");
+    }
+
+    try {
+      const loanInfo = {
+        clientId,
+        amount: parseFloat(numberWithDot(amount)),
+        startDate,
+        paymentDate,
+        rate: parseFloat(numberWithDot(rate)),
+      };
+
+      await api.post("loan/create", loanInfo);
+      setAmount("0");
+      return global.alert("Empréstimo cadastrado com sucesso!");
+    } catch (error) {
+      return global.alert("Erro no sistema");
+    }
+  });
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="client">Cliente</label>
+      <input
+        type="text"
+        name="client"
+        required
+        list="clientName"
+        onChange={handleClient}
+        value={client}
+      />
+      <datalist id="clientName">
+        {clientList.map(({ id, name }) => (
+          <option key={id} value={name} id={id}>
+            {name}
+          </option>
+        ))}
+      </datalist>
       <label htmlFor="amount">Valor</label>
       <CurrencyInput
         id="amount"
