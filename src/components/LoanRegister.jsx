@@ -169,8 +169,6 @@ function LoanRegister() {
         onChange={handlePaymentDate}
       />
       <button type="submit">Finalizar</button>
-      <p>{startDate}</p>
-      <p>{paymentDate}</p>
     </form>
   );
 }
