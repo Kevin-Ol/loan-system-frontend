@@ -45,9 +45,12 @@ function ClientPaymentModal({
     }
 
     try {
+      const today = new Date();
+      const [date] = today.toISOString().split("T");
+
       const paymentInfo = {
         loanId: id,
-        date: new Date(),
+        date,
         amount: numberWithDot(payment),
       };
 

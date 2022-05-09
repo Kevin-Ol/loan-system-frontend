@@ -12,7 +12,7 @@ function Header({ title }) {
 
   return (
     <header>
-      <span>{title}</span>
+      <h1>{title}</h1>
       <Link to="/loan/list">Página Inicial</Link>
       <Link to="/client/register">Cadastrar Cliente</Link>
       <Link to="/loan/register">Cadastrar Empréstimo</Link>
