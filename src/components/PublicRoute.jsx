@@ -6,7 +6,7 @@ function PublicRoute({ children }) {
   const { user } = useAuth();
 
   if (user) {
-    return <Navigate to="/loan/register" />;
+    return <Navigate to="/loan/list" />;
   }
 
   return children || <Outlet />;

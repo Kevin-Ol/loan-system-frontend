@@ -1,0 +1,6 @@
+li {
+  display: grid;
+  grid-template-columns: repeat(9, 15fr);
+  justify-items: center;
+  margin-bottom: 16px;
+}
