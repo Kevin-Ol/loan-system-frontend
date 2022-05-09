@@ -18,8 +18,6 @@ function ClientPaymentModal({
 
   const [payment, setPayment] = useState("");
 
-  const handlePayment = useCallback((value = "") => setPayment(value));
-
   const monthlyPayment = useCallback(() =>
     setPayment(
       monthlyInterest.toLocaleString("pt-br", {
@@ -38,6 +36,16 @@ function ClientPaymentModal({
     )
   );
 
+  const handlePayment = useCallback((value = "") => {
+    const numberValue = parseFloat(numberWithDot(value));
+
+    if (numberValue > debt) {
+      payOffDebt();
+    } else {
+      setPayment(value);
+    }
+  });
+
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
     if (payment === "0") {
@@ -51,7 +59,7 @@ function ClientPaymentModal({
       const paymentInfo = {
         loanId: id,
         date,
-        amount: numberWithDot(payment),
+        amount: parseFloat(numberWithDot(payment)),
       };
 
       await api.post("ledger/create", paymentInfo);
@@ -88,6 +96,7 @@ function ClientPaymentModal({
           Quitar dívida
         </button>
         <button type="submit">Confirmar</button>
+        <p>{payment}</p>
       </form>
     </Modal>
   );

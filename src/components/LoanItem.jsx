@@ -46,9 +46,11 @@ function LoanItem({ loan }) {
       <span>{dateToString(paymentDate)}</span>
       <span>{convertBRL(totalOwned - totalPaid)}</span>
       <span>{status}</span>
-      <button type="button" onClick={handleModal}>
-        Pagar
-      </button>
+      {status === "em aberto" && (
+        <button type="button" onClick={handleModal}>
+          Pagar
+        </button>
+      )}
       <ClientPaymentModal
         id={id}
         monthlyInterest={monthlyInterest}
