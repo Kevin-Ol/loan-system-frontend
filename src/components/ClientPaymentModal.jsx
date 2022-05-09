@@ -8,7 +8,7 @@ Modal.setAppElement("#root");
 function ClientPaymentModal({
   id,
   monthlyInterest,
-  totalOwned,
+  debt,
   modalIsOpen,
   handleModal,
 }) {
@@ -16,15 +16,27 @@ function ClientPaymentModal({
     text.replace(/[^0-9,]/g, "").replace(",", ".")
   );
 
-  const [payment, setPayment] = useState("0");
+  const [payment, setPayment] = useState("");
 
   const handlePayment = useCallback((value = "") => setPayment(value));
 
   const monthlyPayment = useCallback(() =>
-    setPayment(monthlyInterest.toString())
+    setPayment(
+      monthlyInterest.toLocaleString("pt-br", {
+        minimumFractionDigits: 2,
+      })
+    )
   );
 
-  const payOffDebt = useCallback(() => setPayment(totalOwned.toString()));
+  const payOffDebt = useCallback(() =>
+    setPayment(
+      debt
+        .toLocaleString("pt-br", {
+          minimumFractionDigits: 2,
+        })
+        .replace(".", "")
+    )
+  );
 
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
@@ -58,6 +70,8 @@ function ClientPaymentModal({
         <CurrencyInput
           id="payment"
           name="payment"
+          autoComplete="off"
+          placeholder="0,00"
           required
           value={payment}
           decimalScale={2}

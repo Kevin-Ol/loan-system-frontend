@@ -8,16 +8,13 @@ function LoanRegister() {
   );
 
   const dateToString = useCallback((date) => {
-    const currentYear = date.getFullYear();
-    const currentMonth =
-      (date.getMonth() + 1 < 10 ? "0" : "") + (date.getMonth() + 1);
-    const currentDay = (date.getDate() < 10 ? "0" : "") + date.getDate();
-    return `${currentYear}-${currentMonth}-${currentDay}`;
+    const [dateString] = date.toISOString().split("T");
+    return dateString;
   });
 
   const [client, setClient] = useState("");
   const [clientId, setClientId] = useState(null);
-  const [amount, setAmount] = useState("0");
+  const [amount, setAmount] = useState("");
   const [rate, setRate] = useState("30");
   const [days, setDays] = useState(30);
   const [clientList, setClientList] = useState([]);
@@ -94,8 +91,8 @@ function LoanRegister() {
       };
 
       await api.post("loan/create", loanInfo);
-      setAmount("0");
-      return global.alert("Empréstimo cadastrado com sucesso!");
+      global.alert("Empréstimo cadastrado com sucesso!");
+      return window.location.reload();
     } catch (error) {
       return global.alert("Erro no sistema");
     }
@@ -108,6 +105,7 @@ function LoanRegister() {
         type="text"
         name="client"
         required
+        autoComplete="off"
         list="clientName"
         onChange={handleClient}
         value={client}
@@ -124,6 +122,8 @@ function LoanRegister() {
         id="amount"
         name="amount"
         required
+        autoComplete="off"
+        placeholder="0,00"
         value={amount}
         decimalScale={2}
         allowNegativeValue={false}
@@ -134,6 +134,7 @@ function LoanRegister() {
         id="rate"
         name="rate"
         required
+        autoComplete="off"
         value={rate}
         decimalsLimit={20}
         allowNegativeValue={false}
@@ -143,6 +144,7 @@ function LoanRegister() {
       <CurrencyInput
         id="days"
         name="days"
+        autoComplete="off"
         value={days}
         allowDecimals={false}
         allowNegativeValue={false}
@@ -167,6 +169,8 @@ function LoanRegister() {
         onChange={handlePaymentDate}
       />
       <button type="submit">Finalizar</button>
+      <p>{startDate}</p>
+      <p>{paymentDate}</p>
     </form>
   );
 }

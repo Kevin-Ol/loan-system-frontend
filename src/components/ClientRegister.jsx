@@ -86,6 +86,7 @@ function ClientRegister() {
       setNotes("");
       global.alert("Cliente cadastrado com sucesso!");
     } catch (error) {
+      console.log(error.response);
       const { status } = error.response;
 
       if (status === 409) {

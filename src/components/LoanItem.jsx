@@ -4,11 +4,12 @@ import ClientPaymentModal from "./ClientPaymentModal";
 function LoanItem({ loan }) {
   const {
     id,
-    clientId,
+    client,
     amount,
     rate,
     monthlyInterest,
     totalOwned,
+    totalPaid,
     startDate,
     paymentDate,
     status,
@@ -37,13 +38,13 @@ function LoanItem({ loan }) {
 
   return (
     <li>
-      <span>{clientId}</span>
+      <span>{client.name}</span>
       <span>{convertBRL(amount)}</span>
-      <span>{`% ${rate.toFixed(2)}`}</span>
+      <span>{`${rate.toFixed(2)}%`}</span>
       <span>{convertBRL(monthlyInterest)}</span>
       <span>{dateToString(startDate)}</span>
       <span>{dateToString(paymentDate)}</span>
-      <span>{convertBRL(totalOwned)}</span>
+      <span>{convertBRL(totalOwned - totalPaid)}</span>
       <span>{status}</span>
       <button type="button" onClick={handleModal}>
         Pagar
@@ -51,7 +52,7 @@ function LoanItem({ loan }) {
       <ClientPaymentModal
         id={id}
         monthlyInterest={monthlyInterest}
-        totalOwned={totalOwned}
+        debt={totalOwned - totalPaid}
         modalIsOpen={modalIsOpen}
         handleModal={handleModal}
       />
