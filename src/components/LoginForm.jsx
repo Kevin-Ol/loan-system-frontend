@@ -3,17 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/Auth";
 import api from "../services/api";
 
-function Login() {
+function LoginForm() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [revealPassword, setRevealPassword] = useState(false);
-
-  const handleEmail = useCallback(({ target }) => setEmail(target.value));
-  const handlePassword = useCallback(({ target }) => setPassword(target.value));
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleEmail = useCallback(({ target }) => {
+    setEmail(target.value);
+    setErrorMessage("");
+  });
+  const handlePassword = useCallback(({ target }) => {
+    setPassword(target.value);
+    setErrorMessage("");
+  });
 
   const handleRevealPassord = useCallback(({ target }) =>
     setRevealPassword(target.checked)
@@ -34,7 +40,8 @@ function Login() {
   });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="login-form" onSubmit={handleSubmit}>
+      <h1>Login</h1>
       <label htmlFor="email">Email</label>
       <input
         type="email"
@@ -53,16 +60,18 @@ function Login() {
         value={password}
         onChange={handlePassword}
       />
-      <label htmlFor="reveal-password">Mostrar senha</label>
-      <input
-        type="checkbox"
-        id="reveal-password"
-        onChange={handleRevealPassord}
-      />
+      <div>
+        <label htmlFor="reveal-password">Mostrar senha</label>
+        <input
+          type="checkbox"
+          id="reveal-password"
+          onChange={handleRevealPassord}
+        />
+      </div>
       <p>{errorMessage}</p>
       <button type="submit">Entrar</button>
     </form>
   );
 }
 
-export default Login;
+export default LoginForm;

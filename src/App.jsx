@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Loan from "./pages/Loan";
 import Main from "./pages/Main";
@@ -13,7 +13,7 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route element={<PublicRoute />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Login />} />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="loan/list" element={<Main />} />

@@ -52,7 +52,8 @@ function LoanRegister() {
   );
 
   const handleDays = useCallback((value) => {
-    const currentDate = new Date();
+    const currentDate = new Date(startDate);
+
     if (!value) {
       setPaymentDate(dateToString(currentDate));
     } else {
