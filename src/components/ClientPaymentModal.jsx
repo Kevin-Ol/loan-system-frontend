@@ -78,7 +78,7 @@ function ClientPaymentModal({
     <Modal
       isOpen={modalIsOpen}
       onRequestClose={handleModal}
-      contentLabel="Example Modal"
+      contentLabel="Payment Modal"
       className="payment-modal"
     >
       <button type="button" className="close-modal" onClick={handleModal}>

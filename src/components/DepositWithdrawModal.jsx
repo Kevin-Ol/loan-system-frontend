@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import Modal from "react-modal";
 import CurrencyInput from "react-currency-input-field";
 import api from "../services/api";
+import "../styles/DepositWithdrawModal.scss";
 
 Modal.setAppElement("#root");
 
@@ -58,7 +59,11 @@ function DepositWithdrawModal({ modalIsOpen, handleModal }) {
       isOpen={modalIsOpen}
       onRequestClose={handleModal}
       contentLabel="Deposit and Withdraw Modal"
+      className="withdraw-modal"
     >
+      <button type="button" className="close-modal" onClick={handleModal}>
+        X
+      </button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="transaction-value">Valor</label>
         <CurrencyInput

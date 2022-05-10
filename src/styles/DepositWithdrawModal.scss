@@ -1,6 +1,6 @@
 @use 'variables';
 
-.payment-modal {
+.withdraw-modal {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -39,7 +39,7 @@
       justify-content: space-around;
     }
 
-    input {
+    input, select {
       color: variables.$dark-text;
       font-size: 1.6rem;
       border: none;
