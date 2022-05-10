@@ -1,7 +1,7 @@
 @use 'variables';
 
 header {
-  background-color: #1e2297;
+  background-color: variables.$dark-bg;
   color: variables.$light-text;
   font-size: 1.8rem;
   margin-bottom: 5rem;
