@@ -1,0 +1,45 @@
+@use 'variables';
+
+.loan-table {
+  ul {
+    background-color: variables.$light-text;
+    max-width: 95%;
+    text-align: center;
+    margin: 5rem auto;
+    padding: 1rem;
+    border-radius: 8px;
+
+    li:first-child {
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    
+    li {
+      font-size: 1.6rem;
+      display: grid;
+      grid-template-columns: 20fr 20fr 15fr 15fr 20fr 20fr 15fr 15fr 15fr;
+      justify-items: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 0;
+    
+      button {
+        color: variables.$light-text;
+        background-color: variables.$dark-bg;
+        border: none;
+        border-radius: 8px;
+        padding: 1rem 3rem;
+        font-size: 1.6rem;
+    
+        &:hover {
+          background-color: #15186a;
+          box-shadow: inset 0 0 0 2px variables.$light-text;
+        }
+      }
+    }
+    
+    li:not(:last-child) {
+      border-bottom: 1px solid variables.$dark-bg;
+    }
+  }
+}

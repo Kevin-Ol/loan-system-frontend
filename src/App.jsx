@@ -6,7 +6,7 @@ import Main from "./pages/Main";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./context/Auth";
-import "./App.css";
+import "./styles/App.scss";
 
 function App() {
   return (

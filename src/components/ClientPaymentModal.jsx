@@ -96,7 +96,6 @@ function ClientPaymentModal({
           Quitar dívida
         </button>
         <button type="submit">Confirmar</button>
-        <p>{payment}</p>
       </form>
     </Modal>
   );

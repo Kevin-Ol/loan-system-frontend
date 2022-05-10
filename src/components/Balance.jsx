@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import api from "../services/api";
 import DepositWithdrawModal from "./DepositWithdrawModal";
+import "../styles/Balance.scss";
 
 function Balance() {
   const convertBRL = useCallback(
