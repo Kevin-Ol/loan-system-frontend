@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import Modal from "react-modal";
 import CurrencyInput from "react-currency-input-field";
 import api from "../services/api";
+import "../styles/ClientPaymentModal.scss";
 
 Modal.setAppElement("#root");
 
@@ -48,7 +49,10 @@ function ClientPaymentModal({
 
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
-    if (payment === "0") {
+
+    const amount = parseFloat(numberWithDot(payment));
+
+    if (amount === 0) {
       return global.alert("Valor do pagamento não pode ser zero");
     }
 
@@ -59,7 +63,7 @@ function ClientPaymentModal({
       const paymentInfo = {
         loanId: id,
         date,
-        amount: parseFloat(numberWithDot(payment)),
+        amount,
       };
 
       await api.post("ledger/create", paymentInfo);
@@ -75,7 +79,11 @@ function ClientPaymentModal({
       isOpen={modalIsOpen}
       onRequestClose={handleModal}
       contentLabel="Example Modal"
+      className="payment-modal"
     >
+      <button type="button" className="close-modal" onClick={handleModal}>
+        X
+      </button>
       <form onSubmit={handleSubmit}>
         <label htmlFor="payment">Valor</label>
         <CurrencyInput
@@ -89,12 +97,14 @@ function ClientPaymentModal({
           allowNegativeValue={false}
           onValueChange={handlePayment}
         />
-        <button type="button" onClick={monthlyPayment}>
-          Juros mensal
-        </button>
-        <button type="button" onClick={payOffDebt}>
-          Quitar dívida
-        </button>
+        <div>
+          <button type="button" onClick={monthlyPayment}>
+            Juros mensal
+          </button>
+          <button type="button" onClick={payOffDebt}>
+            Quitar dívida
+          </button>
+        </div>
         <button type="submit">Confirmar</button>
       </form>
     </Modal>
