@@ -74,6 +74,7 @@ function ClientRegister() {
         neighborhood,
         state: selectedState,
         city: selectedCity,
+        notes,
       };
 
       await api.post("client/create", clientInfo);
@@ -101,6 +102,7 @@ function ClientRegister() {
       <input
         type="text"
         id="name"
+        autoComplete="off"
         required
         value={name}
         onChange={handleName}
@@ -133,17 +135,25 @@ function ClientRegister() {
         onChange={handlePhone}
       />
       <label htmlFor="street">Endereço</label>
-      <input type="text" id="street" value={street} onChange={handleStreet} />
+      <input
+        type="text"
+        required
+        autoComplete="off"
+        id="street"
+        value={street}
+        onChange={handleStreet}
+      />
       <label htmlFor="neighborhood">Bairro</label>
       <input
         type="text"
         id="neighborhood"
+        required
         value={neighborhood}
         onChange={handleNeighborhood}
       />
       <label htmlFor="state">Estado</label>
-      <select id="state" value={selectedState} onChange={handleState}>
-        <option>Selecione</option>
+      <select id="state" value={selectedState} required onChange={handleState}>
+        <option value="">Selecione</option>
         {states.map(({ id, sigla, nome }) => (
           <option key={id} value={sigla}>
             {nome}
@@ -151,8 +161,8 @@ function ClientRegister() {
         ))}
       </select>
       <label htmlFor="city">Cidade</label>
-      <select id="city" value={selectedCity} onChange={handleCity}>
-        <option>Selecione</option>
+      <select id="city" value={selectedCity} required onChange={handleCity}>
+        <option value="">Selecione</option>
         {cities.map(({ id, sigla, nome }) => (
           <option key={id} value={sigla}>
             {nome}
@@ -160,7 +170,12 @@ function ClientRegister() {
         ))}
       </select>
       <label htmlFor="notes">OBS:</label>
-      <textarea value={notes} onChange={handleNotes} rows="5" cols="50" />
+      <textarea
+        value={notes}
+        onChange={handleNotes}
+        autoComplete="off"
+        rows="5"
+      />
       <button type="submit">Finalizar Cadastro</button>
     </form>
   );
