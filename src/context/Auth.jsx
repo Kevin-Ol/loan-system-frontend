@@ -13,11 +13,12 @@ export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const token = localStorage.getItem("@loan-system");
+    const { token, email } =
+      JSON.parse(localStorage.getItem("@loan-system")) || {};
 
     if (token) {
       api.defaults.headers.common.authorization = token;
-      return true;
+      return { email };
     }
 
     return false;

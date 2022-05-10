@@ -29,8 +29,8 @@ function LoginForm() {
     event.preventDefault();
     try {
       const { data } = await api.post("login", { email, password });
-
-      localStorage.setItem("@loan-system", data.token);
+      console.log(data);
+      localStorage.setItem("@loan-system", JSON.stringify(data));
       api.defaults.headers.common.authorization = data.token;
       setUser(true);
       navigate("/loan/list");
