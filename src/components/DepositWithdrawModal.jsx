@@ -77,7 +77,7 @@ function DepositWithdrawModal({ modalIsOpen, handleModal }) {
           allowNegativeValue={false}
           onValueChange={handleTransactionValue}
         />
-        <label htmlFor="transaction-type">Valor</label>
+        <label htmlFor="transaction-type">Transação</label>
         <select
           id="transaction-type"
           value={transactionType}

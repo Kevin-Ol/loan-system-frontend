@@ -113,7 +113,7 @@ function LoanRegister() {
       />
       <datalist id="clientName">
         {clientList.map(({ id, name }) => (
-          <option key={id} value={name} id={id}>
+          <option key={id} value={name}>
             {name}
           </option>
         ))}

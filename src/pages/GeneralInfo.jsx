@@ -2,7 +2,7 @@ import LoanList from "../components/LoanList";
 import Header from "../components/Header";
 import Balance from "../components/Balance";
 
-function Register() {
+function GeneralInfo() {
   return (
     <main>
       <Header title="Listagem de empréstimos" />
@@ -12,4 +12,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default GeneralInfo;
