@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import api from "../services/api";
 import TransactionList from "./TransactionList";
+import CreateSettlementModal from "./CreateSettlementModal";
 import "../styles/SearchClient.scss";
 
 function SearchClient() {
@@ -8,6 +9,12 @@ function SearchClient() {
   const [clientId, setClientId] = useState(null);
   const [clientList, setClientList] = useState([]);
   const [loanList, setLoanList] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const handleModal = useCallback(
+    () => setModalIsOpen((oldState) => !oldState),
+    []
+  );
 
   const handleClient = useCallback(({ target }) => {
     setClient(target.value);
@@ -64,7 +71,20 @@ function SearchClient() {
         </datalist>
         <button type="submit">Buscar</button>
       </form>
-      {loanList.length > 0 && <TransactionList loanList={loanList} />}
+      {loanList.length > 0 && (
+        <>
+          <TransactionList loanList={loanList} />
+          <button type="button" onClick={handleModal}>
+            Gerar acordo
+          </button>
+          <CreateSettlementModal
+            modalIsOpen={modalIsOpen}
+            handleModal={handleModal}
+            loanList={loanList}
+            clientId={clientId}
+          />
+        </>
+      )}
     </>
   );
 }

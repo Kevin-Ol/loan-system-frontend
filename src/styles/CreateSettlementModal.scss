@@ -1,0 +1,19 @@
+@use 'variables';
+
+.settlement-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 70rem;
+
+  font-size: 1.6rem;
+  color: variables.$light-text;
+  background-color: variables.$dark-bg;
+  margin: 0 auto 5rem;
+  padding: 5rem 7rem 6rem;
+
+  ul {
+    list-style: none;
+  }
+}

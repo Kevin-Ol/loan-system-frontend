@@ -1,11 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useState, useCallback } from "react";
 
 function TransactionItem({ loan }) {
   const {
-    // id,
-    // client,
     amount,
     rate,
     monthlyInterest,

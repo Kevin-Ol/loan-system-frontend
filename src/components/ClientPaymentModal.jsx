@@ -21,9 +21,11 @@ function ClientPaymentModal({
 
   const monthlyPayment = useCallback(() =>
     setPayment(
-      monthlyInterest.toLocaleString("pt-br", {
-        minimumFractionDigits: 2,
-      })
+      monthlyInterest
+        .toLocaleString("pt-br", {
+          minimumFractionDigits: 2,
+        })
+        .replace(".", "")
     )
   );
 

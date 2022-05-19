@@ -17,6 +17,7 @@ function Header({ title }) {
       <div>
         <Link to="/loan/list">Página Inicial</Link>
         <Link to="/client/register">Cadastrar Cliente</Link>
+        <Link to="/client/search">Buscar Cliente</Link>
         <Link to="/loan/register">Cadastrar Empréstimo</Link>
         <span>{user.email}</span>
         <button type="button" onClick={handleLogout}>
