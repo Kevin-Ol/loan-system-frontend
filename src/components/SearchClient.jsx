@@ -74,7 +74,11 @@ function SearchClient() {
       {loanList.length > 0 && (
         <>
           <TransactionList loanList={loanList} />
-          <button type="button" onClick={handleModal}>
+          <button
+            type="button"
+            onClick={handleModal}
+            className="generate-settlement"
+          >
             Gerar acordo
           </button>
           <CreateSettlementModal

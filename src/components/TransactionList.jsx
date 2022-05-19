@@ -4,6 +4,7 @@ function TransactionList({ loanList }) {
   return (
     <section className="transaction-table">
       <ul>
+        <h2>Lista de Empréstimos</h2>
         <li>
           <span>Empréstimo inicial</span>
           <span>Percentual</span>

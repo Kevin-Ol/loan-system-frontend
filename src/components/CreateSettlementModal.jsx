@@ -102,8 +102,11 @@ function CreateSettlementModal({
       contentLabel="Settlement Modal"
       className="settlement-modal"
     >
+      <button type="button" className="close-modal" onClick={handleModal}>
+        X
+      </button>
       <form>
-        <h2>Gerar acordo</h2>
+        <h2>Gerar Acordo</h2>
         <ul>
           <li>
             <span>Data empréstimo</span>
@@ -137,6 +140,15 @@ function CreateSettlementModal({
           allowNegativeValue={false}
           onValueChange={handleSettlementValue}
         />
+        <label htmlFor="start-date">Data inicial</label>
+        <input
+          type="date"
+          id="start-date"
+          name="start-date"
+          required
+          value={startDate}
+          onChange={handleStartDate}
+        />
         <label htmlFor="installment">Parcelas</label>
         <CurrencyInput
           id="installment"
@@ -149,15 +161,7 @@ function CreateSettlementModal({
           allowNegativeValue={false}
           onValueChange={handleInstallments}
         />
-        <label htmlFor="start-date">Data inicial</label>
-        <input
-          type="date"
-          id="start-date"
-          name="start-date"
-          required
-          value={startDate}
-          onChange={handleStartDate}
-        />
+
         <p>
           Total por parcela:
           {` ${convertBRL(
