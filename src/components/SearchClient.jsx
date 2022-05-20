@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import api from "../services/api";
 import AllLoansList from "./AllLoansList";
+import AllSettlementsList from "./AllSettlementsList";
 import CreateSettlementModal from "./CreateSettlementModal";
 import "../styles/SearchClient.scss";
 
@@ -9,6 +10,7 @@ function SearchClient() {
   const [clientId, setClientId] = useState(null);
   const [clientList, setClientList] = useState([]);
   const [loanList, setLoanList] = useState([]);
+  const [settlementList, setSettlementList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleModal = useCallback(
@@ -41,8 +43,13 @@ function SearchClient() {
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
     try {
-      const { data } = await api.get(`loan/list/${clientId}`);
-      setLoanList(data);
+      const promises = [
+        api.get(`loan/list/${clientId}`),
+        api.get(`settlement/list/${clientId}`),
+      ];
+      const [loans, settlements] = await Promise.all(promises);
+      setLoanList(loans.data);
+      setSettlementList(settlements.data);
     } catch (error) {
       console.log(error);
     }
@@ -87,6 +94,9 @@ function SearchClient() {
             clientId={clientId}
           />
         </>
+      )}
+      {settlementList.length > 0 && (
+        <AllSettlementsList settlementList={settlementList} />
       )}
     </>
   );

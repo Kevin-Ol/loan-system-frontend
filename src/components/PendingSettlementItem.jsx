@@ -23,7 +23,7 @@ function PendingSettlementItem({ settlement }) {
     const futureDate = new Date(startDate);
     return futureDate.setMonth(futureDate.getMonth() + installments);
   });
-  console.log(paymentDate);
+
   const convertBRL = useCallback(
     (price) =>
       price.toLocaleString("pt-br", {
