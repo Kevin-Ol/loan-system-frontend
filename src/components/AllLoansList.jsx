@@ -1,6 +1,6 @@
-import TransactionItem from "./TransactionItem";
+import AllLoansItem from "./AllLoansItem";
 
-function TransactionList({ loanList }) {
+function AllLoansList({ loanList }) {
   return (
     <section className="transaction-table">
       <ul>
@@ -15,11 +15,11 @@ function TransactionList({ loanList }) {
           <span>Status</span>
         </li>
         {loanList.map((loan) => (
-          <TransactionItem key={loan.id} loan={loan} />
+          <AllLoansItem key={loan.id} loan={loan} />
         ))}
       </ul>
     </section>
   );
 }
 
-export default TransactionList;
+export default AllLoansList;

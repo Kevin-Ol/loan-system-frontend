@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import ClientPaymentModal from "./ClientPaymentModal";
 
-function LoanItem({ loan }) {
+function PendingLoanItem({ loan }) {
   const {
     id,
     client,
@@ -62,4 +62,4 @@ function LoanItem({ loan }) {
   );
 }
 
-export default LoanItem;
+export default PendingLoanItem;

@@ -12,6 +12,7 @@ function ClientPaymentModal({
   debt,
   modalIsOpen,
   handleModal,
+  settlement,
 }) {
   const numberWithDot = useCallback((text) =>
     text.replace(/[^0-9,]/g, "").replace(",", ".")
@@ -62,11 +63,17 @@ function ClientPaymentModal({
       const today = new Date();
       const [date] = today.toISOString().split("T");
 
-      const paymentInfo = {
-        loanId: id,
-        date,
-        amount,
-      };
+      const paymentInfo = settlement
+        ? {
+            settlementId: id,
+            date,
+            amount,
+          }
+        : {
+            loanId: id,
+            date,
+            amount,
+          };
 
       await api.post("ledger/create", paymentInfo);
       global.alert("Pagamento efetuado com sucesso!");
@@ -101,7 +108,7 @@ function ClientPaymentModal({
         />
         <div>
           <button type="button" onClick={monthlyPayment}>
-            Juros mensal
+            {settlement ? "Parcela" : "Juros mensal"}
           </button>
           <button type="button" onClick={payOffDebt}>
             Quitar dívida

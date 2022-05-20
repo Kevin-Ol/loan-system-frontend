@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-function TransactionItem({ loan }) {
+function AllLoansItem({ loan }) {
   const {
     amount,
     rate,
@@ -63,4 +63,4 @@ function TransactionItem({ loan }) {
   );
 }
 
-export default TransactionItem;
+export default AllLoansItem;

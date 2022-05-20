@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import LoanItem from "./LoanItem";
+import PendingLoanItem from "./PendingLoanItem";
 import api from "../services/api";
 import "../styles/LoanList.scss";
 
-function LoanList() {
+function PendingLoanList() {
   const [loanList, setLoanList] = useState([]);
 
   useEffect(() => {
@@ -34,11 +34,11 @@ function LoanList() {
           <span>Status</span>
         </li>
         {loanList.map((loan) => (
-          <LoanItem key={loan.id} loan={loan} />
+          <PendingLoanItem key={loan.id} loan={loan} />
         ))}
       </ul>
     </section>
   );
 }
 
-export default LoanList;
+export default PendingLoanList;

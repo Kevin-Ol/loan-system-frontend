@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import api from "../services/api";
-import TransactionList from "./TransactionList";
+import AllLoansList from "./AllLoansList";
 import CreateSettlementModal from "./CreateSettlementModal";
 import "../styles/SearchClient.scss";
 
@@ -72,7 +72,7 @@ function SearchClient() {
       </form>
       {loanList.length > 0 && (
         <>
-          <TransactionList loanList={loanList} />
+          <AllLoansList loanList={loanList} />
           <button
             type="button"
             onClick={handleModal}
