@@ -9,7 +9,11 @@
     padding: 1rem;
     border-radius: 8px;
 
-    li:first-child {
+    h2 {
+      font-size: 2.8rem;
+    }
+
+    li:nth-child(2) {
       font-weight: 700;
       font-size: 1.8rem;
     }

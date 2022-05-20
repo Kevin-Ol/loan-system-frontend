@@ -62,10 +62,14 @@ function CreateSettlementModal({
     setInstallments(value);
   });
 
+  const isChecked = useCallback((loan) =>
+    loanToSettlement.some(({ id }) => id === loan.id)
+  );
+
   useEffect(() => {
     setSettlementValue(
       loanToSettlement
-        .reduce((acc, cur) => acc + cur.totalOwned, 0)
+        .reduce((acc, cur) => acc + (cur.totalOwned - cur.totalPaid), 0)
         .toLocaleString("pt-br", {
           minimumFractionDigits: 2,
         })
@@ -118,11 +122,12 @@ function CreateSettlementModal({
               <label htmlFor={`loan-${loan.id}`}>
                 <span>{dateToString(loan.startDate)}</span>
                 <span>{dateToString(loan.paymentDate)}</span>
-                <span>{convertBRL(loan.totalOwned)}</span>
+                <span>{convertBRL(loan.totalOwned - loan.totalPaid)}</span>
               </label>
               <input
                 type="checkbox"
                 id={`loan-${loan.id}`}
+                checked={isChecked(loan)}
                 onChange={(event) => handleLoanToSettlement(event, loan)}
               />
             </li>

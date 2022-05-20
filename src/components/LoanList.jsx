@@ -10,7 +10,8 @@ function LoanList() {
     const fetchClients = async () => {
       try {
         const { data } = await api.get("loan/list");
-        setLoanList(data);
+        const openLoans = data.filter(({ status }) => status === "em aberto");
+        setLoanList(openLoans);
       } catch (error) {
         console.log(error);
       }
@@ -21,6 +22,7 @@ function LoanList() {
   return (
     <section className="loan-table">
       <ul>
+        <h2>Lista de Empréstimos</h2>
         <li>
           <span>Nome</span>
           <span>Empréstimo inicial</span>

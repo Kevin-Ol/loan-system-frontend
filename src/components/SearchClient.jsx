@@ -43,7 +43,6 @@ function SearchClient() {
     try {
       const { data } = await api.get(`loan/list/${clientId}`);
       setLoanList(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
