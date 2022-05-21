@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Loan from "./pages/Loan";
 import GeneralInfo from "./pages/GeneralInfo";
 import Search from "./pages/Search";
+import Admin from "./pages/Admin";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./context/Auth";
@@ -21,6 +22,7 @@ function App() {
           <Route path="loan/register" element={<Loan />} />
           <Route path="client/register" element={<Register />} />
           <Route path="client/search" element={<Search />} />
+          <Route path="admin/register" element={<Admin />} />
         </Route>
         <Route path="*" element={<Navigate to="/loan/register" />} />
       </Routes>
