@@ -22,7 +22,9 @@ function AllSettlementsItem({ settlement }) {
 
   const dateToString = useCallback((date) => {
     const dateObj = new Date(date);
-    return dateObj.toLocaleDateString();
+    const [onlyDate] = dateObj.toISOString().split("T");
+    const [year, month, day] = onlyDate.split("-");
+    return `${day}/${month}/${year}`;
   });
 
   const convertBRL = useCallback(

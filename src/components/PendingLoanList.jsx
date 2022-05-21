@@ -57,7 +57,7 @@ function PendingLoanList() {
 
   return (
     <section className="loan-table">
-      <div>
+      <div className="search-date">
         <label htmlFor="start-date">Data inicial</label>
         <input
           type="date"
@@ -85,10 +85,10 @@ function PendingLoanList() {
         <li>
           <span>Nome</span>
           <span>Empréstimo inicial</span>
-          <span>Percentual</span>
-          <span>Juros mensal</span>
           <span>Data empréstimo</span>
           <span>Data vencimento</span>
+          <span>Percentual</span>
+          <span>Juros mensal</span>
           <span>Total devido</span>
           <span>Status</span>
         </li>

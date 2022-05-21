@@ -17,7 +17,9 @@ function PendingLoanItem({ loan }) {
 
   const dateToString = useCallback((date) => {
     const dateObj = new Date(date);
-    return dateObj.toLocaleDateString();
+    const [onlyDate] = dateObj.toISOString().split("T");
+    const [year, month, day] = onlyDate.split("-");
+    return `${day}/${month}/${year}`;
   });
 
   const className = totalOwned > amount ? "red-btn" : "";
@@ -42,10 +44,10 @@ function PendingLoanItem({ loan }) {
     <li>
       <span>{client.name}</span>
       <span>{convertBRL(amount)}</span>
-      <span>{`${rate.toFixed(2)}%`}</span>
-      <span>{convertBRL(monthlyInterest)}</span>
       <span>{dateToString(startDate)}</span>
       <span>{dateToString(paymentDate)}</span>
+      <span>{`${rate.toFixed(2)}%`}</span>
+      <span>{convertBRL(monthlyInterest)}</span>
       <span>{convertBRL(totalOwned - totalPaid)}</span>
       <span>{status}</span>
       {status === "em aberto" && (

@@ -18,6 +18,7 @@ function LoanRegister() {
   const [rate, setRate] = useState("30");
   const [days, setDays] = useState(30);
   const [clientList, setClientList] = useState([]);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const [startDate, setStartDate] = useState(() => {
     const currentDate = new Date();
@@ -91,10 +92,12 @@ function LoanRegister() {
         rate: parseFloat(numberWithDot(rate)),
       };
 
+      setBtnDisabled(true);
       await api.post("loan/create", loanInfo);
       global.alert("Empréstimo cadastrado com sucesso!");
       return window.location.reload();
     } catch (error) {
+      setBtnDisabled(false);
       return global.alert("Erro no sistema");
     }
   });
@@ -169,7 +172,9 @@ function LoanRegister() {
         value={paymentDate}
         onChange={handlePaymentDate}
       />
-      <button type="submit">Finalizar</button>
+      <button type="submit" disabled={btnDisabled}>
+        Finalizar
+      </button>
     </form>
   );
 }

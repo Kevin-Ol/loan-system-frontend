@@ -11,12 +11,13 @@ function PendingSettlementItem({ settlement }) {
     monthlyPayment,
     totalPaid,
     status,
-    months,
   } = settlement;
 
   const dateToString = useCallback((date) => {
     const dateObj = new Date(date);
-    return dateObj.toLocaleDateString();
+    const [onlyDate] = dateObj.toISOString().split("T");
+    const [year, month, day] = onlyDate.split("-");
+    return `${day}/${month}/${year}`;
   });
 
   const paymentDate = useMemo(() => {
@@ -46,8 +47,11 @@ function PendingSettlementItem({ settlement }) {
       <span>{convertBRL(amount)}</span>
       <span>{dateToString(startDate)}</span>
       <span>{dateToString(paymentDate)}</span>
+      <span>{`${parseInt(
+        totalPaid / monthlyPayment,
+        10
+      )}/${installments}`}</span>
       <span>{convertBRL(monthlyPayment)}</span>
-      <span>{`${months}/${installments}`}</span>
       <span>{convertBRL(amount - totalPaid)}</span>
       <span>{status}</span>
       <button type="button" onClick={handleModal}>

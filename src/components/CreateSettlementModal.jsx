@@ -35,6 +35,7 @@ function CreateSettlementModal({
   const [installments, setInstallments] = useState(1);
   const [loanToSettlement, setLoanToSettlement] = useState([]);
   const [settlementValue, setSettlementValue] = useState("");
+  const [btnDisabled, setBtnDisabled] = useState(false);
   const [startDate, setStartDate] = useState(() => {
     const currentDate = new Date();
     const [dateString] = currentDate.toISOString().split("T");
@@ -82,6 +83,10 @@ function CreateSettlementModal({
       const loanToSettleIds = loanToSettlement.map(({ id }) => id);
       const amount = parseFloat(numberWithDot(settlementValue));
 
+      if (amount === 0) {
+        return global.alert("Valor do empréstimo não pode ser zero");
+      }
+
       const settlementInfo = {
         clientId,
         loanToSettleIds,
@@ -90,10 +95,12 @@ function CreateSettlementModal({
         amount,
       };
 
+      setBtnDisabled(true);
       await api.post("settlement/create", settlementInfo);
       global.alert("Acordo criado com sucesso!");
       return window.location.reload();
     } catch (error) {
+      setBtnDisabled(false);
       console.log(error);
       return global.alert("Erro no sistema");
     }
@@ -174,7 +181,7 @@ function CreateSettlementModal({
               parseInt(installments, 10) || 0
           )}`}
         </p>
-        <button type="button" onClick={handleSubmit}>
+        <button type="button" disabled={btnDisabled} onClick={handleSubmit}>
           Finalizar Acordo
         </button>
       </form>

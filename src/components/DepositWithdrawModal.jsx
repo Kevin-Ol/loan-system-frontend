@@ -13,6 +13,7 @@ function DepositWithdrawModal({ modalIsOpen, handleModal }) {
 
   const [transactionValue, setTransactionValue] = useState("");
   const [transactionType, setTransactionType] = useState("withdraw");
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const handleTransactionValue = useCallback((value = "") =>
     setTransactionValue(value)
@@ -45,10 +46,12 @@ function DepositWithdrawModal({ modalIsOpen, handleModal }) {
         amount,
       };
 
+      setBtnDisabled(true);
       await api.post("ledger/create", transactionInfo);
       global.alert("Transação efetuada com sucesso!");
       return window.location.reload();
     } catch (error) {
+      setBtnDisabled(false);
       console.log(error);
       return global.alert("Erro no sistema");
     }
@@ -86,7 +89,9 @@ function DepositWithdrawModal({ modalIsOpen, handleModal }) {
           <option value="withdraw">Saque</option>
           <option value="deposit">Depósito</option>
         </select>
-        <button type="submit">Confirmar</button>
+        <button type="submit" disabled={btnDisabled}>
+          Confirmar
+        </button>
       </form>
     </Modal>
   );

@@ -17,6 +17,7 @@ function ClientRegister() {
   const [cities, setCities] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
   const [notes, setNotes] = useState("");
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const handleName = useCallback(({ target }) => setName(target.value));
   const handleStreet = useCallback(({ target }) => setStreet(target.value));
@@ -77,6 +78,7 @@ function ClientRegister() {
         notes,
       };
 
+      setBtnDisabled(true);
       await api.post("client/create", clientInfo);
       setName("");
       setRg("");
@@ -87,7 +89,8 @@ function ClientRegister() {
       setNotes("");
       global.alert("Cliente cadastrado com sucesso!");
     } catch (error) {
-      console.log(error.response);
+      setBtnDisabled(false);
+      console.log(error);
       const { status } = error.response;
 
       if (status === 409) {
@@ -176,7 +179,9 @@ function ClientRegister() {
         autoComplete="off"
         rows="5"
       />
-      <button type="submit">Finalizar Cadastro</button>
+      <button type="submit" disabled={btnDisabled}>
+        Finalizar Cadastro
+      </button>
     </form>
   );
 }

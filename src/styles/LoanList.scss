@@ -1,6 +1,35 @@
 @use 'variables';
 
-.loan-table {
+.loan-table, .settlement-table {
+  .search-date {
+    margin: 5rem auto 0;
+    font-size: 1.8rem;
+
+    color: variables.$light-text;
+    background-color: variables.$dark-bg;
+    width: fit-content;
+    padding: 2rem 4rem;
+    border-radius: 500rem;
+
+    label, input {
+      margin-right: 1rem;
+    }
+
+    button {
+      background-color: variables.$light-text;
+      border: none;
+      border-radius: 4px;
+      padding: 0.3rem 2rem;
+      color: variables.$dark-text;
+      font-size: 1.6rem;
+  
+      &:hover {
+        background-color: variables.$light-bg;
+        box-shadow: inset 0 0 0 2px variables.$dark-text;
+      }
+    }
+  }
+
   ul {
     background-color: variables.$light-text;
     max-width: 95%;
@@ -21,7 +50,7 @@
     li {
       font-size: 1.6rem;
       display: grid;
-      grid-template-columns: 20fr 20fr 15fr 15fr 20fr 20fr 15fr 15fr 15fr;
+      grid-template-columns: 20fr 20fr 20fr 20fr 15fr 15fr 15fr 15fr 15fr;
       justify-items: center;
       align-items: center;
       text-align: center;
@@ -52,5 +81,3 @@
     }
   }
 }
-
-

@@ -22,7 +22,7 @@ function PendingSettlementList() {
   }, []);
 
   return (
-    <section className="loan-table">
+    <section className="settlement-table">
       <ul>
         <h2>Lista de Acordos</h2>
         <li>
@@ -30,8 +30,8 @@ function PendingSettlementList() {
           <span>Acordo inicial</span>
           <span>Data acordo</span>
           <span>Data vencimento</span>
-          <span>Valor mensal</span>
           <span>Parcelas</span>
+          <span>Valor mensal</span>
           <span>Total devido</span>
           <span>Status</span>
         </li>

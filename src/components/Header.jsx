@@ -15,15 +15,19 @@ function Header({ title }) {
     <header>
       <h1>{title}</h1>
       <div>
-        <Link to="/loan/list">Página Inicial</Link>
-        <Link to="/client/register">Cadastrar Cliente</Link>
-        <Link to="/client/search">Buscar Cliente</Link>
-        <Link to="/loan/register">Cadastrar Empréstimo</Link>
-        <span>{user.email}</span>
-        <button type="button" onClick={handleLogout}>
-          Sair
-        </button>
+        <div>
+          <Link to="/loan/list">Página Inicial</Link>
+          <Link to="/client/search">Buscar Cliente</Link>
+          <Link to="/client/register">Cadastrar Cliente</Link>
+        </div>
+        <div>
+          <Link to="/loan/register">Cadastrar Empréstimo</Link>
+        </div>
       </div>
+      <span>{user.email}</span>
+      <button type="button" onClick={handleLogout}>
+        Sair
+      </button>
     </header>
   );
 }

@@ -19,6 +19,7 @@ function ClientPaymentModal({
   );
 
   const [payment, setPayment] = useState("");
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const monthlyPayment = useCallback(() =>
     setPayment(
@@ -75,10 +76,12 @@ function ClientPaymentModal({
             amount,
           };
 
+      setBtnDisabled(true);
       await api.post("ledger/create", paymentInfo);
       global.alert("Pagamento efetuado com sucesso!");
       return window.location.reload();
     } catch (error) {
+      setBtnDisabled(false);
       return global.alert("Erro no sistema");
     }
   });
@@ -114,7 +117,9 @@ function ClientPaymentModal({
             Quitar dívida
           </button>
         </div>
-        <button type="submit">Confirmar</button>
+        <button type="submit" disabled={btnDisabled}>
+          Confirmar
+        </button>
       </form>
     </Modal>
   );
