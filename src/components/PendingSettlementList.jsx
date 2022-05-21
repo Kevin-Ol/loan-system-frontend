@@ -11,7 +11,7 @@ function PendingSettlementList() {
       try {
         const { data } = await api.get("settlement/list");
         const openSettlements = data.filter(
-          ({ status }) => status === "em dia"
+          ({ status }) => status !== "quitado"
         );
         setSettlementList(openSettlements);
       } catch (error) {
@@ -20,6 +20,7 @@ function PendingSettlementList() {
     };
     fetchClients();
   }, []);
+
   return (
     <section className="loan-table">
       <ul>

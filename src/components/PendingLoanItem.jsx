@@ -20,6 +20,8 @@ function PendingLoanItem({ loan }) {
     return dateObj.toLocaleDateString();
   });
 
+  const className = totalOwned > amount ? "red-btn" : "";
+
   const convertBRL = useCallback(
     (price) =>
       price.toLocaleString("pt-br", {
@@ -47,7 +49,7 @@ function PendingLoanItem({ loan }) {
       <span>{convertBRL(totalOwned - totalPaid)}</span>
       <span>{status}</span>
       {status === "em aberto" && (
-        <button type="button" onClick={handleModal}>
+        <button type="button" className={className} onClick={handleModal}>
           Pagar
         </button>
       )}
