@@ -22,7 +22,7 @@ function PendingLoanItem({ loan }) {
     return `${day}/${month}/${year}`;
   });
 
-  const className = totalOwned > amount ? "red-btn" : "";
+  const className = totalOwned - totalPaid > amount ? "red-btn" : "";
 
   const convertBRL = useCallback(
     (price) =>
