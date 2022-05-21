@@ -96,7 +96,7 @@ function CreateAdmin() {
       </div>
       <p>{errorMessage}</p>
       <button type="submit" disabled={btnDisabled}>
-        Entrar
+        Cadastrar
       </button>
     </form>
   );
