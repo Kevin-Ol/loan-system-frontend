@@ -5,6 +5,7 @@ import "../styles/LoanList.scss";
 
 function PendingLoanList() {
   const [loanList, setLoanList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
 
   const dateToString = useCallback((date) => {
     const [dateString] = date.toISOString().split("T");
@@ -36,6 +37,7 @@ function PendingLoanList() {
         const { data } = await api.get("loan/list");
         const openLoans = data.filter(({ status }) => status === "em aberto");
         setLoanList(openLoans);
+        setFilteredList(openLoans);
       } catch (error) {
         console.log(error);
       }
@@ -44,15 +46,11 @@ function PendingLoanList() {
   }, []);
 
   const handleSearch = useCallback(async () => {
-    try {
-      const { data } = await api.get(
-        `loan/list?start=${startDate}&end=${endDate}`
-      );
-      const openLoans = data.filter(({ status }) => status === "em aberto");
-      setLoanList(openLoans);
-    } catch (error) {
-      console.log(error);
-    }
+    setFilteredList(
+      loanList.filter(
+        (loan) => loan.paymentDate >= startDate && loan.paymentDate <= endDate
+      )
+    );
   });
 
   return (
@@ -92,7 +90,7 @@ function PendingLoanList() {
           <span>Total devido</span>
           <span>Status</span>
         </li>
-        {loanList.map((loan) => (
+        {filteredList.map((loan) => (
           <PendingLoanItem key={loan.id} loan={loan} />
         ))}
       </ul>
