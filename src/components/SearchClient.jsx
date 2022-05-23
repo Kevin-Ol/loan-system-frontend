@@ -3,6 +3,8 @@ import api from "../services/api";
 import AllLoansList from "./AllLoansList";
 import AllSettlementsList from "./AllSettlementsList";
 import CreateSettlementModal from "./CreateSettlementModal";
+import ClientDetails from "./ClientDetails";
+import ClientEditDetails from "./ClientEditDetails";
 import "../styles/SearchClient.scss";
 
 function SearchClient() {
@@ -12,6 +14,10 @@ function SearchClient() {
   const [loanList, setLoanList] = useState([]);
   const [settlementList, setSettlementList] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [clientData, setClientData] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+
+  const handleEditMode = () => setEditMode((previousState) => !previousState);
 
   const handleModal = useCallback(
     () => setModalIsOpen((oldState) => !oldState),
@@ -46,10 +52,12 @@ function SearchClient() {
       const promises = [
         api.get(`loan/list/${clientId}`),
         api.get(`settlement/list/${clientId}`),
+        api.get(`client/${clientId}`),
       ];
-      const [loans, settlements] = await Promise.all(promises);
+      const [loans, settlements, clientResponse] = await Promise.all(promises);
       setLoanList(loans.data);
       setSettlementList(settlements.data);
+      setClientData(clientResponse.data);
     } catch (error) {
       console.log(error);
     }
@@ -77,6 +85,18 @@ function SearchClient() {
         </datalist>
         <button type="submit">Buscar</button>
       </form>
+      {clientData && !editMode && (
+        <ClientDetails
+          clientData={clientData}
+          handleEditMode={handleEditMode}
+        />
+      )}
+      {clientData && editMode && (
+        <ClientEditDetails
+          clientData={clientData}
+          handleEditMode={handleEditMode}
+        />
+      )}
       {loanList.length > 0 && (
         <>
           <AllLoansList loanList={loanList} />
