@@ -38,6 +38,8 @@ export function AuthProvider({ children }) {
 
     if (token) {
       getUser();
+    } else {
+      setLoading(false);
     }
   }, []);
 

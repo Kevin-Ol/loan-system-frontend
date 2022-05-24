@@ -11,8 +11,12 @@
     padding: 2rem 4rem;
     border-radius: 500rem;
 
-    label, input {
+    label {
       margin-right: 1rem;
+    }
+    
+    select {
+      font-size: 1.6rem;
     }
 
     button {
@@ -22,6 +26,7 @@
       padding: 0.3rem 2rem;
       color: variables.$dark-text;
       font-size: 1.6rem;
+      margin-left: 1rem;
   
       &:hover {
         background-color: variables.$light-bg;
