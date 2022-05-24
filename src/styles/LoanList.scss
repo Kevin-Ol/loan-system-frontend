@@ -30,6 +30,23 @@
     }
   }
 
+  .search-balance {
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin-top: 2rem;
+  
+    div {
+      background-color: variables.$light-text;
+      border: 3px solid variables.$dark-bg;
+      border-radius: 8px;
+      text-align: center;
+      padding: 1rem 4rem;
+    }
+  }
+
   ul {
     background-color: variables.$light-text;
     max-width: 95%;
