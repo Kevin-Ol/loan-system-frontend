@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
   });
 
   useEffect(() => {
-    const { token } = JSON.parse(localStorage.getItem("@loan-system"));
+    const { token } = JSON.parse(localStorage.getItem("@loan-system")) || {};
 
     async function getUser() {
       try {
