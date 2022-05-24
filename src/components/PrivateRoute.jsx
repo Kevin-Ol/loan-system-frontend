@@ -3,13 +3,15 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/Auth";
 
 function PrivateRoute({ children }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  if (!user) {
+  if (!user && !loading) {
     return <Navigate to="/" />;
   }
 
-  return children || <Outlet />;
+  if (!loading) {
+    return children || <Outlet />;
+  }
 }
 
 export default PrivateRoute;

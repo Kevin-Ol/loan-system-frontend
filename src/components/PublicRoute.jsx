@@ -3,13 +3,15 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/Auth";
 
 function PublicRoute({ children }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  if (user) {
+  if (user && !loading) {
     return <Navigate to="/loan/list" />;
   }
 
-  return children || <Outlet />;
+  if (!loading) {
+    return children || <Outlet />;
+  }
 }
 
 export default PublicRoute;
