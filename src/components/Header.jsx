@@ -23,6 +23,7 @@ function Header({ title }) {
         <div>
           <Link to="/loan/register">Cadastrar Empréstimo</Link>
           <Link to="/admin/register">Cadastrar Administrador</Link>
+          <Link to="/reports">Relatórios</Link>
         </div>
       </div>
       <span>{user.email}</span>
