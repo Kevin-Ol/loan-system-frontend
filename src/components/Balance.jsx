@@ -16,6 +16,7 @@ function Balance() {
   const [yearlyBalance, setYearlyBalance] = useState(0);
   const [monthlyBalance, setMonthlyBalance] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleModal = useCallback(
     () => setModalIsOpen((oldState) => !oldState),
@@ -36,6 +37,7 @@ function Balance() {
         const [yearly, monthly] = await Promise.all(balancePromises);
         setYearlyBalance(yearly.data);
         setMonthlyBalance(monthly.data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -43,15 +45,17 @@ function Balance() {
     fetchClients();
   }, []);
 
+  if (loading) return <div />;
+
   return (
     <section className="balance-section">
       <div>
         <h2>Saldo Anual</h2>
-        <p>{convertBRL(yearlyBalance)}</p>
+        <p>{convertBRL(yearlyBalance?.balance)}</p>
       </div>
       <div>
         <h2>Saldo Mensal</h2>
-        <p>{convertBRL(monthlyBalance)}</p>
+        <p>{convertBRL(monthlyBalance?.balance)}</p>
       </div>
       <DepositWithdrawModal
         modalIsOpen={modalIsOpen}

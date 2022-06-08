@@ -22,7 +22,7 @@ function PendingLoanItem({ loan }) {
     return `${day}/${month}/${year}`;
   });
 
-  const className = totalOwned - totalPaid > amount ? "red-btn" : "";
+  const className = status === "em atraso" ? "red-btn" : "";
 
   const convertBRL = useCallback(
     (price) =>
@@ -50,7 +50,7 @@ function PendingLoanItem({ loan }) {
       <span>{convertBRL(monthlyInterest)}</span>
       <span>{convertBRL(totalOwned - totalPaid)}</span>
       <span>{status}</span>
-      {status === "em aberto" && (
+      {(status === "em dia" || status === "em atraso") && (
         <button type="button" className={className} onClick={handleModal}>
           Pagar
         </button>

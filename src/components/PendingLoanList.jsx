@@ -38,7 +38,10 @@ function PendingLoanList() {
     const fetchClients = async () => {
       try {
         const { data } = await api.get("loan/list");
-        const openLoans = data.filter(({ status }) => status === "em aberto");
+        const openLoans = data.filter(
+          ({ status }) => status === "em dia" || status === "em atraso"
+        );
+        console.log(data);
         setLoanList(openLoans);
         setFilteredList(openLoans);
       } catch (error) {
