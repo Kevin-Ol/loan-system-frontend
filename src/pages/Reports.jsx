@@ -1,5 +1,6 @@
 import DownloadReports from "../components/DownloadReports";
 import Header from "../components/Header";
+import "../styles/Reports.scss";
 
 function Reports() {
   return (

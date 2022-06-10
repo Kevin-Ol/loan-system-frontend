@@ -1,10 +1,10 @@
-/* eslint-disable no-restricted-syntax */
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import api from "../services/api";
 
 function DownloadReports() {
-  const [reportData, setReportData] = useState([]);
   const [selectedReport, setSelectedReport] = useState("loan");
+  const [btnDisabled, setBtnDisabled] = useState(false);
+  const [emptyMessage, setEmptyMessage] = useState("");
 
   const handleReport = useCallback(({ target }) => {
     setSelectedReport(target.value);
@@ -42,37 +42,60 @@ function DownloadReports() {
     []
   );
 
-  const download = useCallback((data) => {
+  const download = useCallback((data, fileName) => {
     const blob = new Blob([data], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.setAttribute("hidden", "true");
     a.setAttribute("href", url);
-    a.setAttribute("download", "download.csv");
+    a.setAttribute("download", `${fileName}.csv`);
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   }, []);
 
-  const objectToCsv = useCallback((data, title, portugueseHeaders) => {
+  const objectToCsv = useCallback((data, title, portugueseHeaders, type) => {
     const csvRows = [];
 
     const headers = Object.keys(data[0]);
     csvRows.push(title);
     csvRows.push(portugueseHeaders);
 
+    const positiveIncome = [];
+    const negativeIncome = [];
+
+    const sumArray = (array) => array.reduce((acc, cur) => acc + cur, 0);
+
     for (const row of data) {
       const values = headers.map((header) => {
         const escaped = row[header].toString().replace(/"/g, '\\"');
+
+        if (header === "monthlyInterest" || header === "entry") {
+          positiveIncome.push(row[header]);
+        }
+
+        if (header === "totalOwned" || header === "out") {
+          negativeIncome.push(row[header]);
+        }
+
         return `"${escaped}"`;
       });
       csvRows.push(values);
     }
 
+    const totals =
+      type === "ledger"
+        ? ["Total recebido", "Saídas totais"]
+        : ["Total a receber", "Total faltante"];
+
+    csvRows.push("");
+    csvRows.push(totals);
+    csvRows.push([sumArray(positiveIncome), sumArray(negativeIncome)]);
+
     return csvRows.join("\n");
   }, []);
 
-  const handleLoanReport = useCallback(() => {
+  const handleLoanReport = useCallback((reportData) => {
     const openLoans = reportData.filter(
       ({ status }) => status === "em dia" || status === "em atraso"
     );
@@ -98,10 +121,13 @@ function DownloadReports() {
     ];
 
     const title = "Tabela de Devedores";
-    download(objectToCsv(data, title, portugueseHeaders));
-  }, [reportData]);
+    download(
+      objectToCsv(data, title, portugueseHeaders, "loan"),
+      "emprestimos"
+    );
+  }, []);
 
-  const handleSettlementReport = useCallback(() => {
+  const handleSettlementReport = useCallback((reportData) => {
     const openSettlements = reportData.filter(
       ({ status }) => status !== "quitado"
     );
@@ -138,13 +164,16 @@ function DownloadReports() {
     ];
 
     const title = "Tabela de Devedores";
-    download(objectToCsv(data, title, portugueseHeaders));
-  }, [reportData]);
+    download(
+      objectToCsv(data, title, portugueseHeaders, "settlement"),
+      "acordos"
+    );
+  }, []);
 
-  const handleLedgerReport = useCallback(() => {
+  const handleLedgerReport = useCallback((reportData) => {
     const data = reportData.map((ledger) => {
-      const entry = ledger.amount > 0 ? ledger.amount : "";
-      const out = ledger.amount < 0 ? ledger.amount * -1 : "";
+      const entry = ledger.amount > 0 ? ledger.amount : 0;
+      const out = ledger.amount < 0 ? ledger.amount * -1 : 0;
       const name =
         ledger.loan?.client.name ||
         ledger.settlement?.client.name ||
@@ -161,76 +190,99 @@ function DownloadReports() {
     const portugueseHeaders = ["Nome", "Data da ação", "Entrada", "Saída"];
 
     const title = "Tabela livro caixa";
-    download(objectToCsv(data, title, portugueseHeaders));
-  }, [reportData]);
+    download(
+      objectToCsv(data, title, portugueseHeaders, "ledger"),
+      "livro caixa"
+    );
+  }, []);
 
-  const availableReports = {
-    loan: {
-      url: "loan/list",
-      handler: handleLoanReport,
+  const availableReports = useMemo(
+    () => ({
+      loan: {
+        url: `loan/list?start=${startDate}&end=${paymentDate}`,
+        handler: handleLoanReport,
+      },
+      settlement: {
+        url: `settlement/list?start=${startDate}&end=${paymentDate}`,
+        handler: handleSettlementReport,
+      },
+      ledger: {
+        url: `ledger/list?start=${startDate}&end=${paymentDate}`,
+        handler: handleLedgerReport,
+      },
+    }),
+    [startDate, paymentDate]
+  );
+
+  const handleDownload = useCallback(
+    async (event) => {
+      event.preventDefault();
+      setBtnDisabled(true);
+      setEmptyMessage("");
+
+      try {
+        const { data } = await api.get(availableReports[selectedReport].url);
+        if (data[0]) {
+          availableReports[selectedReport].handler(data);
+        } else {
+          setEmptyMessage("Não há dados para essa data");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setBtnDisabled(false);
     },
-    settlement: {
-      url: "settlement/list",
-      handler: handleSettlementReport,
-    },
-    ledger: {
-      url: "ledger/list",
-      handler: handleLedgerReport,
-    },
-  };
+    [availableReports, selectedReport]
+  );
 
-  const handleDownload = useCallback(async (event) => {
-    event.preventDefault();
-
-    try {
-      const { data } = await api.get(availableReports[selectedReport].url);
-      setReportData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  });
-
-  useEffect(() => {
-    if (reportData[0]) {
-      availableReports[selectedReport].handler();
-    }
-  }, [reportData]);
+  // useEffect(() => {
+  //   if (reportData[0]) {
+  //     availableReports[selectedReport].handler();
+  //   } else {
+  //     setEmptyMessage("Não há dados para essa data");
+  //   }
+  // }, [reportData]);
 
   return (
-    <div>
-      <label htmlFor="start-date">Data inicial</label>
-      <input
-        type="date"
-        id="start-date"
-        name="start-date"
-        required
-        value={startDate}
-        onChange={handleStartDate}
-      />
-      <label htmlFor="payment-date">Data final</label>
-      <input
-        type="date"
-        id="payment-date"
-        name="payment-date"
-        required
-        value={paymentDate}
-        onChange={handlePaymentDate}
-      />
-      <label htmlFor="report">Tipo: </label>
-      <select
-        id="report"
-        value={selectedReport}
-        required
-        onChange={handleReport}
-      >
-        <option value="loan">Empréstimos</option>
-        <option value="settlement">Acordos</option>
-        <option value="ledger">Livro Caixa</option>
-      </select>
-      <button type="button" onClick={handleDownload}>
+    <section className="reports-section">
+      <div>
+        <label htmlFor="start-date">Data inicial</label>
+        <input
+          type="date"
+          id="start-date"
+          name="start-date"
+          required
+          value={startDate}
+          onChange={handleStartDate}
+        />
+        <label htmlFor="payment-date">Data final</label>
+        <input
+          type="date"
+          id="payment-date"
+          name="payment-date"
+          required
+          value={paymentDate}
+          onChange={handlePaymentDate}
+        />
+      </div>
+      <div>
+        <label htmlFor="report">Tipo</label>
+        <select
+          id="report"
+          value={selectedReport}
+          required
+          onChange={handleReport}
+        >
+          <option value="loan">Empréstimos</option>
+          <option value="settlement">Acordos</option>
+          <option value="ledger">Livro Caixa</option>
+        </select>
+      </div>
+      <button type="button" onClick={handleDownload} disabled={btnDisabled}>
         Download
       </button>
-    </div>
+      <p>{emptyMessage}</p>
+    </section>
   );
 }
 
