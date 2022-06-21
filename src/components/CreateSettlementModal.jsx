@@ -30,7 +30,9 @@ function CreateSettlementModal({
     []
   );
 
-  const pendingLoans = loanList.filter(({ status }) => status === "em aberto");
+  const pendingLoans = loanList.filter(
+    ({ status }) => status === "em aberto" || status === "em atraso"
+  );
 
   const [installments, setInstallments] = useState(1);
   const [loanToSettlement, setLoanToSettlement] = useState([]);
