@@ -89,14 +89,14 @@ function ClientRegister() {
       setNotes("");
       global.alert("Cliente cadastrado com sucesso!");
     } catch (error) {
-      setBtnDisabled(false);
       console.log(error);
       const { status } = error.response;
-
+      
       if (status === 409) {
         global.alert("Usuário já cadastrado");
       }
     }
+    setBtnDisabled(false);
   });
 
   return (
