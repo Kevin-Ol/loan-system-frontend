@@ -28,7 +28,7 @@ function Balance() {
       const today = new Date();
       const year = today.getFullYear();
       const month = today.getMonth();
-      const BASE_URL = "http://localhost:3001/ledger/balance?start=";
+      const BASE_URL = `${process.env.REACT_APP_API_URL}ledger/balance?start=`;
       try {
         const balancePromises = [
           api.get(`${BASE_URL}${year}-01-01`),
